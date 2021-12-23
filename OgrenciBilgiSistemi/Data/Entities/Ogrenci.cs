@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
@@ -10,7 +11,9 @@ namespace OgrenciBilgiSistemi.Data.Entities
     {
         public int Id { get; set; }
 
-        public string OgrenciNo { get; set; }
+        [Required]
+        [RegularExpression("^[1-9]{1}[0-9]{7}$",ErrorMessage ="Sadece 8 haneli sayı girebilirsiniz")]
+        public string OgrenciNo { get; set; }  
 
 
         //Nav prop
