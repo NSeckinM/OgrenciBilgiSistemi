@@ -34,7 +34,7 @@ namespace OgrenciBilgiSistemi.Data.Entities
 
 
         [ForeignKey("Kullanici")]
-        public int KullaniciId { get; set; }
+        public string KullaniciId { get; set; }
         public Kullanici Kullanici { get; set; }
 
         public Iletisim Iletisim { get; set; }

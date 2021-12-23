@@ -7,7 +7,7 @@ using System.Text;
 
 namespace OgrenciBilgiSistemi.Data
 {
-    public class ApplicationDbContext : IdentityDbContext
+    public class ApplicationDbContext : IdentityDbContext<Kullanici>
     {
 
         public DbSet<Ders> Dersler { get; set; }
@@ -17,8 +17,6 @@ namespace OgrenciBilgiSistemi.Data
         public DbSet<Iletisim> Iletisimler { get; set; }
 
         public DbSet<Kimlik> Kimlikler { get; set; }
-
-        public DbSet<Kullanici> Kullanicilar { get; set; }
 
         public DbSet<Mufredat> Mufredatlar { get; set; }
 

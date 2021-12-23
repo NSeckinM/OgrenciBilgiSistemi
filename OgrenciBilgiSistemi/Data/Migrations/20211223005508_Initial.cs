@@ -26,6 +26,10 @@ namespace OgrenciBilgiSistemi.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    KullaniciId = table.Column<int>(type: "int", nullable: false),
+                    KullaniciAdi = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Sifre = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Tur = table.Column<bool>(type: "bit", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -60,21 +64,6 @@ namespace OgrenciBilgiSistemi.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Dersler", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Kullanicilar",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    KullaniciAdi = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Sifre = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Tur = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Kullanicilar", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -281,17 +270,17 @@ namespace OgrenciBilgiSistemi.Data.Migrations
                     DogumYeri = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DogumTarihi = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     OgrenciId = table.Column<int>(type: "int", nullable: false),
-                    KullaniciId = table.Column<int>(type: "int", nullable: false)
+                    KullaniciId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Kimlikler", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Kimlikler_Kullanicilar_KullaniciId",
+                        name: "FK_Kimlikler_AspNetUsers_KullaniciId",
                         column: x => x.KullaniciId,
-                        principalTable: "Kullanicilar",
+                        principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Kimlikler_Ogrenciler_OgrenciId",
                         column: x => x.OgrenciId,
@@ -383,7 +372,8 @@ namespace OgrenciBilgiSistemi.Data.Migrations
                 name: "IX_Kimlikler_KullaniciId",
                 table: "Kimlikler",
                 column: "KullaniciId",
-                unique: true);
+                unique: true,
+                filter: "[KullaniciId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Kimlikler_OgrenciId",
@@ -437,16 +427,13 @@ namespace OgrenciBilgiSistemi.Data.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
-
-            migrationBuilder.DropTable(
                 name: "Kimlikler");
 
             migrationBuilder.DropTable(
                 name: "Dersler");
 
             migrationBuilder.DropTable(
-                name: "Kullanicilar");
+                name: "AspNetUsers");
 
             migrationBuilder.DropTable(
                 name: "Ogrenciler");
