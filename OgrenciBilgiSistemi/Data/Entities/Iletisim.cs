@@ -23,10 +23,6 @@ namespace OgrenciBilgiSistemi.Data.Entities
         [RegularExpression("^(05)([0-9]{2})\\s?([0-9]{3})\\s?([0-9]{2})\\s?([0-9]{2})$")]
         public string Gsm { get; set; }
 
-        
-
-        [ForeignKey("Kimlik")]
-        public int KimlikId { get; set; }
         public Kimlik Kimlik { get; set; }
 
     }

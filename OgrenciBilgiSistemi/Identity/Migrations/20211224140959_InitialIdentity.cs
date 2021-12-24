@@ -1,9 +1,9 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace OgrenciBilgiSistemi.Data.Migrations
+namespace OgrenciBilgiSistemi.Identity.Migrations
 {
-    public partial class Initial : Migration
+    public partial class InitialIdentity : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -26,9 +26,8 @@ namespace OgrenciBilgiSistemi.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    KullaniciId = table.Column<int>(type: "int", nullable: false),
+                    KimlikNo = table.Column<int>(type: "int", nullable: false),
                     KullaniciAdi = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Sifre = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Tur = table.Column<bool>(type: "bit", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -48,35 +47,6 @@ namespace OgrenciBilgiSistemi.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Dersler",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    DersKodu = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    DersAdi = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Durum = table.Column<bool>(type: "bit", nullable: false),
-                    Kredi = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Dersler", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Mufredatlar",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    MufredatAdi = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Mufredatlar", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -185,134 +155,6 @@ namespace OgrenciBilgiSistemi.Data.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "MufredatDersler",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    DersId = table.Column<int>(type: "int", nullable: false),
-                    MufredatId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_MufredatDersler", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_MufredatDersler_Dersler_DersId",
-                        column: x => x.DersId,
-                        principalTable: "Dersler",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_MufredatDersler_Mufredatlar_MufredatId",
-                        column: x => x.MufredatId,
-                        principalTable: "Mufredatlar",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Ogrenciler",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    OgrenciNo = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    MufredatId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Ogrenciler", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Ogrenciler_Mufredatlar_MufredatId",
-                        column: x => x.MufredatId,
-                        principalTable: "Mufredatlar",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "DersKayitlari",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    OgrenciId = table.Column<int>(type: "int", nullable: false),
-                    DersId = table.Column<int>(type: "int", nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_DersKayitlari", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_DersKayitlari_Dersler_DersId",
-                        column: x => x.DersId,
-                        principalTable: "Dersler",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_DersKayitlari_Ogrenciler_OgrenciId",
-                        column: x => x.OgrenciId,
-                        principalTable: "Ogrenciler",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Kimlikler",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    TcNo = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Ad = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Soyad = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    DogumYeri = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    DogumTarihi = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    OgrenciId = table.Column<int>(type: "int", nullable: false),
-                    KullaniciId = table.Column<string>(type: "nvarchar(450)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Kimlikler", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Kimlikler_AspNetUsers_KullaniciId",
-                        column: x => x.KullaniciId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Kimlikler_Ogrenciler_OgrenciId",
-                        column: x => x.OgrenciId,
-                        principalTable: "Ogrenciler",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Iletisimler",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Adres = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Il = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Ilce = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Gsm = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    KimlikId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Iletisimler", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Iletisimler_Kimlikler_KimlikId",
-                        column: x => x.KimlikId,
-                        principalTable: "Kimlikler",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -351,50 +193,6 @@ namespace OgrenciBilgiSistemi.Data.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_DersKayitlari_DersId",
-                table: "DersKayitlari",
-                column: "DersId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_DersKayitlari_OgrenciId",
-                table: "DersKayitlari",
-                column: "OgrenciId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Iletisimler_KimlikId",
-                table: "Iletisimler",
-                column: "KimlikId",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Kimlikler_KullaniciId",
-                table: "Kimlikler",
-                column: "KullaniciId",
-                unique: true,
-                filter: "[KullaniciId] IS NOT NULL");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Kimlikler_OgrenciId",
-                table: "Kimlikler",
-                column: "OgrenciId",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_MufredatDersler_DersId",
-                table: "MufredatDersler",
-                column: "DersId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_MufredatDersler_MufredatId",
-                table: "MufredatDersler",
-                column: "MufredatId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Ogrenciler_MufredatId",
-                table: "Ogrenciler",
-                column: "MufredatId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -415,31 +213,10 @@ namespace OgrenciBilgiSistemi.Data.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "DersKayitlari");
-
-            migrationBuilder.DropTable(
-                name: "Iletisimler");
-
-            migrationBuilder.DropTable(
-                name: "MufredatDersler");
-
-            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "Kimlikler");
-
-            migrationBuilder.DropTable(
-                name: "Dersler");
-
-            migrationBuilder.DropTable(
                 name: "AspNetUsers");
-
-            migrationBuilder.DropTable(
-                name: "Ogrenciler");
-
-            migrationBuilder.DropTable(
-                name: "Mufredatlar");
         }
     }
 }

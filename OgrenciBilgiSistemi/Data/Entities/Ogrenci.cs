@@ -18,8 +18,8 @@ namespace OgrenciBilgiSistemi.Data.Entities
 
         //Nav prop
 
-        public List<DersKayit> DersKayitlari { get; set; }
-
+        [ForeignKey("Kimlik")]
+        public int KimlikId { get; set; }
         public Kimlik Kimlik { get; set; }
 
 
@@ -27,5 +27,6 @@ namespace OgrenciBilgiSistemi.Data.Entities
         public int MufredatId { get; set; }
         public Mufredat Mufredat { get; set; }
 
+        public List<DersKayit> DersKayitlari { get; set; }
     }
 }

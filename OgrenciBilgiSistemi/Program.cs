@@ -1,7 +1,12 @@
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using OgrenciBilgiSistemi.Data;
+using OgrenciBilgiSistemi.Data.Entities;
+using OgrenciBilgiSistemi.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,9 +16,21 @@ namespace OgrenciBilgiSistemi
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
-            CreateHostBuilder(args).Build().Run();
+            var host = CreateHostBuilder(args).Build();
+
+            using (var scope = host.Services.CreateScope())
+            {
+                var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+                var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+                var userManager = scope.ServiceProvider.GetRequiredService<UserManager<Kullanici>>();
+
+                await ApplicationIdentityDbSeed.SeedIdentityAsync(roleManager,userManager);
+                await ApplicationDbContextSeed.SeedAsync(dbContext);
+            }
+
+            host.Run();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>

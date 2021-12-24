@@ -7,7 +7,7 @@ using System.Text;
 
 namespace OgrenciBilgiSistemi.Data
 {
-    public class ApplicationDbContext : IdentityDbContext<Kullanici>
+    public class ApplicationDbContext : DbContext
     {
 
         public DbSet<Ders> Dersler { get; set; }
@@ -26,6 +26,12 @@ namespace OgrenciBilgiSistemi.Data
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options): base(options)
         {
+
+
+
+
         }
+
+
     }
 }
