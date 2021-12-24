@@ -1,15 +1,9 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using OgrenciBilgiSistemi.Data;
 using OgrenciBilgiSistemi.Data.Entities;
-using OgrenciBilgiSistemi.Identity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace OgrenciBilgiSistemi
@@ -26,7 +20,6 @@ namespace OgrenciBilgiSistemi
                 var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
                 var userManager = scope.ServiceProvider.GetRequiredService<UserManager<Kullanici>>();
 
-                await ApplicationIdentityDbSeed.SeedIdentityAsync(roleManager,userManager);
                 await ApplicationDbContextSeed.SeedAsync(dbContext);
             }
 

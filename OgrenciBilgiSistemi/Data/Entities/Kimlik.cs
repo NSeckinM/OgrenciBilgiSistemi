@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace OgrenciBilgiSistemi.Data.Entities
 {
@@ -29,9 +25,10 @@ namespace OgrenciBilgiSistemi.Data.Entities
         //nav
         public Ogrenci Ogrenci { get; set; }
 
+        public Kullanici Kullanici { get; set; }
 
         [ForeignKey("Iletisim")]
-        public int IletisimId { get; set; }
+        public int? IletisimId { get; set; }
         public Iletisim Iletisim { get; set; }
 
     }

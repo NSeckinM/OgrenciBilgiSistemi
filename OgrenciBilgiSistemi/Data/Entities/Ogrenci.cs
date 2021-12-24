@@ -18,14 +18,15 @@ namespace OgrenciBilgiSistemi.Data.Entities
 
         //Nav prop
 
+        [ForeignKey("Mufredat")]
+        public int? MufredatId { get; set; }
+        public Mufredat Mufredat { get; set; }
+
+
         [ForeignKey("Kimlik")]
-        public int KimlikId { get; set; }
+        public int? KimlikId { get; set; }
         public Kimlik Kimlik { get; set; }
 
-
-        [ForeignKey("Mufredat")]
-        public int MufredatId { get; set; }
-        public Mufredat Mufredat { get; set; }
 
         public List<DersKayit> DersKayitlari { get; set; }
     }

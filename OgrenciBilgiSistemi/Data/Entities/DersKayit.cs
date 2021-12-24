@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace OgrenciBilgiSistemi.Data.Entities
 {
@@ -12,12 +9,12 @@ namespace OgrenciBilgiSistemi.Data.Entities
 
 
         [ForeignKey("Ogrenci")]
-        public int OgrenciId { get; set; }
+        public int? OgrenciId { get; set; }
         public Ogrenci Ogrenci { get; set; }
 
 
         [ForeignKey("Ders")]
-        public int DersId { get; set; }
+        public int? DersId { get; set; }
         public Ders Ders { get; set; }
 
 
