@@ -20,7 +20,7 @@ namespace OgrenciBilgiSistemi
                 var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
                 var userManager = scope.ServiceProvider.GetRequiredService<UserManager<Kullanici>>();
 
-                await ApplicationDbContextSeed.SeedAsync(dbContext);
+                await ApplicationDbContextSeed.SeedAsync(roleManager,userManager,dbContext);
             }
 
             host.Run();
