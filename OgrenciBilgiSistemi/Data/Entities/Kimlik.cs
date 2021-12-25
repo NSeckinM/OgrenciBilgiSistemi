@@ -8,7 +8,7 @@ namespace OgrenciBilgiSistemi.Data.Entities
 
         public int Id { get; set; }
         [Required]
-        [RegularExpression("^[1-9]{1}[0-9]{9}[02468]{1}$",ErrorMessage ="Lütfen Tc kimlik no su giriniz.")]
+        [RegularExpression("^[1-9]{1}[0-9]{9}[02468]{1}$",ErrorMessage ="Lütfen 11 haneli Tc kimlik numarası giriniz.")]
         public string TcNo { get; set; }
 
         [Required]

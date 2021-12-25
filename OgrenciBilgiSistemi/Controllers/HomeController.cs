@@ -26,14 +26,12 @@ namespace OgrenciBilgiSistemi.Controllers
                 return View("IndexPublic");
             }
 
-            string userEmail = User.FindFirst(ClaimTypes.Email).Value;
-            string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            //string userEmail = User.FindFirst(ClaimTypes.Email).Value;
+            //string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-            if (User.Identity.IsAuthenticated && userEmail == "mno@xyz.com")
+            if (User.Identity.IsAuthenticated && User.IsInRole("admin"))
             {
                 return RedirectToAction("Index", "Admin");
-
-                
             }
             else
             {
