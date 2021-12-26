@@ -1,0 +1,24 @@
+﻿@model DuzenleMufViewModel
+
+<form method="post" asp-controller="Admin" asp-action="EditMuf">
+
+    <input type="hidden" asp-for="Id" />
+
+    <div class="form-group">
+
+        <label asp-for="MufredatAdi"></label>
+        <input asp-for="MufredatAdi" class="form-control" />
+        <span asp-validation-for="MufredatAdi" class="text-danger"></span>
+
+    </div>
+
+    <button class="btn btn-outline-primary">Kaydet</button>
+
+</form>
+
+<div style="margin:15px">
+     <a asp-controller="Admin" asp-action="IndexMufredat" class="btn btn-outline-dark">Geri Dön</a>
+
+</div>
+
+

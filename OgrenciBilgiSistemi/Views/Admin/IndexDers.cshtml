@@ -1,0 +1,70 @@
+﻿@model List<Ders>
+
+<div class="row">
+
+    <div class="col-md-4 col-lg-6">
+        <div>
+
+            <a class="btn btn-primary" asp-controller="Admin" asp-action="CreateDers">Yeni Ders Oluştur</a>
+
+        </div>
+    </div>
+
+    <div class="col-md-8 col-lg-9">
+        <div>
+
+            <h3>Mevcut Dersler</h3>
+
+        </div>
+
+        <div>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Ders Kodu</th>
+                        <th>Ders Adı</th>
+                        <th>Kredi</th>
+                        <th>Durum</th>
+                        <th>Düzenle</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    @foreach (var item in Model)
+                    {
+                    <tr>
+                        <td>
+                            <strong>@item.DersKodu</strong>
+                        </td>
+                        <td>
+                            @item.DersAdi
+                        </td>
+                        <td>
+                            @item.Kredi
+                        </td>
+                        <td>
+                            @if (@item.Durum)
+                            {
+                                <span>Aktif</span>
+                            }
+                            else
+                            {
+                                <span>Pasif</span>
+                            }
+                        </td>
+
+                        <td>
+                            <a asp-controller="Admin" asp-action="EditDers" asp-route-id="@item.Id" class="btn btn-outline-success">Düzenle</a>
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+
+            </table>
+        </div>
+
+    </div>
+</div>
+
+<a asp-controller="Admin" asp-action="Index" class="btn btn-outline-dark">Ana sayfaya Geri Dön</a>

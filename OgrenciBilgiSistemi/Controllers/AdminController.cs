@@ -112,51 +112,215 @@ namespace OgrenciBilgiSistemi.Controllers
 
         }
 
-        // GET: AdminController/Details/5
-        public ActionResult Details(int id)
+
+
+        public ActionResult EditOgr(int id)
         {
-            return View();
-        }
-        // GET: AdminController/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
+            Ogrenci ogr = _dbContext.Ogrenciler.Where(x => x.Id == id).Include(k => k.Kimlik).Include(i => i.Kimlik.Iletisim).FirstOrDefault();
+            if (ogr == null)
+            {
+                return NotFound("Sistemde Böyle Bir Öğrenci Bulunamadı.");
+            }
+
+            DuzenleOgrViewModel vm = new();
+            vm.Id = ogr.Id;
+            vm.TcNo = ogr.Kimlik.TcNo;
+            vm.Ad = ogr.Kimlik.Ad;
+            vm.Soyad = ogr.Kimlik.Soyad;
+            vm.DogumYeri = ogr.Kimlik.DogumYeri;
+            vm.DogumTarihi = ogr.Kimlik.DogumTarihi;
+            vm.Adres = ogr.Kimlik.Iletisim.Adres;
+            vm.Il = ogr.Kimlik.Iletisim.Il;
+            vm.Ilce = ogr.Kimlik.Iletisim.Ilce;
+            vm.Email = ogr.Kimlik.Iletisim.Email;
+            vm.Gsm = ogr.Kimlik.Iletisim.Gsm;
+
+
+            return View(vm);
         }
 
         // POST: AdminController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult EditOgr(DuzenleOgrViewModel vm)
         {
-            try
+            if (ModelState.IsValid)
             {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
+                Ogrenci ogr = _dbContext.Ogrenciler.Where(x => x.Id == vm.Id).Include(k => k.Kimlik).Include(i => i.Kimlik.Iletisim).Include(i => i.Kimlik.Kullanici).FirstOrDefault();
+                ogr.Id = vm.Id;
+                ogr.Kimlik.TcNo = vm.TcNo;
+                ogr.Kimlik.Ad = vm.Ad;
+                ogr.Kimlik.Soyad = vm.Soyad;
+                ogr.Kimlik.DogumYeri = vm.DogumYeri;
+                ogr.Kimlik.DogumTarihi = vm.DogumTarihi;
+                ogr.Kimlik.Iletisim.Adres = vm.Adres;
+                ogr.Kimlik.Iletisim.Il = vm.Il;
+                ogr.Kimlik.Iletisim.Ilce = vm.Ilce;
+                ogr.Kimlik.Iletisim.Email = vm.Email;
+                ogr.Kimlik.Iletisim.Gsm = vm.Gsm;
+                ogr.Kimlik.Kullanici.KullaniciAdi = vm.Ad.ToLower() + "." + vm.Soyad.ToLower();
+                ogr.Kimlik.Kullanici.UserName = vm.Email;
+                ogr.Kimlik.Kullanici.Email = vm.Email;
+                ogr.Kimlik.Kullanici.NormalizedUserName = ogr.Kimlik.Kullanici.NormalizedEmail = vm.Email.ToUpper().Trim();
+              
 
-        // GET: AdminController/Delete/5
-        public ActionResult Delete(int id)
+                _dbContext.SaveChanges();
+                return RedirectToAction("Index", "Admin");
+
+            }
+
+            return View();
+        }
+        public ActionResult Details(int id)
         {
             return View();
         }
 
-        // POST: AdminController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public ActionResult IndexMufredat()
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
+            List<Mufredat> muf = _dbContext.Mufredatlar.ToList();
+
+            if (muf == null)
             {
                 return View();
             }
+            return View(muf);
+
         }
+
+        public IActionResult CreateMuf()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult CreateMuf(CreateMufViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                Mufredat mufredat = new()
+                {
+                    MufredatAdi = model.MufredatAdi
+                };
+                _dbContext.Mufredatlar.Add(mufredat);
+                _dbContext.SaveChanges();
+                return RedirectToAction("IndexMufredat", "Admin");
+            }
+
+            return View();
+
+        }
+
+
+
+        public ActionResult EditMuf(int id)
+        {
+            Mufredat muf = _dbContext.Mufredatlar.Where(x => x.Id == id).FirstOrDefault();
+            if (muf == null)
+            {
+                return NotFound("Sistemde Böyle Bir Müfredat Bulunamadı.");
+            }
+
+            DuzenleMufViewModel vm = new();
+            vm.Id = muf.Id;
+            vm.MufredatAdi = muf.MufredatAdi;
+            return View(vm);
+        }
+
+        // POST: AdminController/Edit/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditMuf(DuzenleMufViewModel vm)
+        {
+            if (ModelState.IsValid)
+            {
+                Mufredat muf = _dbContext.Mufredatlar.Where(x => x.Id == vm.Id).FirstOrDefault();
+                muf.Id = vm.Id;
+                muf.MufredatAdi = vm.MufredatAdi;
+                _dbContext.SaveChanges();
+                return RedirectToAction("IndexMufredat", "Admin");
+            }
+            return View();
+        }
+
+
+        public ActionResult IndexDers()
+        {
+            List<Ders> dersler = _dbContext.Dersler.ToList();
+
+            if (dersler == null)
+            {
+                return View();
+            }
+            return View(dersler);
+
+        }
+
+
+        public IActionResult CreateDers()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult CreateDers(CreateDersViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                Ders ders = new()
+                {
+                    DersKodu = model.DersKodu,
+                    DersAdi = model.DersAdi,
+                    Durum = model.Durum,
+                    Kredi = model.Kredi
+                };
+                _dbContext.Dersler.Add(ders);
+                _dbContext.SaveChanges();
+                return RedirectToAction("IndexDers", "Admin");
+            }
+
+            return View();
+
+        }
+
+        public ActionResult EditDers(int id)
+        {
+            Ders ders = _dbContext.Dersler.Where(x => x.Id == id).FirstOrDefault();
+            if (ders == null)
+            {
+                return NotFound("Sistemde Böyle Bir Ders Bulunamadı.");
+            }
+
+            DuzenleDersViewModel vm = new();
+            vm.Id = ders.Id;
+            vm.DersKodu = ders.DersKodu;
+            vm.DersAdi = ders.DersAdi;
+            vm.Durum = ders.Durum;
+            vm.Kredi = ders.Kredi;
+            return View(vm);
+        }
+
+        // POST: AdminController/Edit/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditDers(DuzenleDersViewModel vm)
+        {
+            if (ModelState.IsValid)
+            {
+                Ders ders = _dbContext.Dersler.Where(x => x.Id == vm.Id).FirstOrDefault();
+                ders.Id = vm.Id;
+                ders.DersKodu = vm.DersKodu;
+                ders.DersAdi = vm.DersAdi;
+                ders.Durum = vm.Durum;
+                ders.Kredi = vm.Kredi;
+                _dbContext.SaveChanges();
+                return RedirectToAction("IndexDers", "Admin");
+            }
+            return View();
+        }
+
+
     }
 }
