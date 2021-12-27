@@ -6,12 +6,12 @@
 
 ## Database
 
-<img src=""/>
+<img src="https://github.com/NSeckinM/OgrenciBilgiSistemi/blob/master/OgrenciBilgiSistemi/Images/DatabaseDiagram.png"/>
 
 ## Admin Arayüzü
 
-<img src=""/>
+<img src="https://github.com/NSeckinM/OgrenciBilgiSistemi/blob/master/OgrenciBilgiSistemi/Images/Admin.png"/>
 
 ## Ögrenci Arayüzü
 
-<img src=""/>
+<img src="https://github.com/NSeckinM/OgrenciBilgiSistemi/blob/master/OgrenciBilgiSistemi/Images/Ogr.png"/>
