@@ -86,28 +86,43 @@ namespace OgrenciBilgiSistemi.Controllers
             return View(ogrs);
         }
 
-        // GET: OgrenciController/Create
-        public ActionResult Create()
+
+        public ActionResult DersAl()
         {
-            return View();
+            string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            Kullanici kullanici = _dbContext.Users.Where(x => x.Id == userId).Include(k => k.Kimlik).Include(i => i.Kimlik.Iletisim).FirstOrDefault();
+
+            Ogrenci ogrenci = _dbContext.Ogrenciler.Where(x => x.KimlikId == kullanici.KimlikId).FirstOrDefault();
+            List<MufredatDers> muf = _dbContext.MufredatDersler.Include(x => x.Ders).Where(x => x.MufredatId == ogrenci.MufredatId).ToList();
+
+            return View(muf);
         }
 
-        // POST: OgrenciController/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public ActionResult DersEkle(int id)
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
+            string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            Kullanici kullanici = _dbContext.Users.Where(x => x.Id == userId).Include(k => k.Kimlik).Include(i => i.Kimlik.Iletisim).FirstOrDefault();
 
-       
+            Ogrenci ogrenci = _dbContext.Ogrenciler.Include(x => x.DersKayitlari).Where(x => x.KimlikId == kullanici.KimlikId).FirstOrDefault();
+            Ders ders = _dbContext.Dersler.Where(x => x.Id == id).FirstOrDefault();
+
+            DersKayit yeniDers = new();
+
+            yeniDers.Ogrenci = ogrenci;
+            yeniDers.Ders = ders;
+            foreach (var item in ogrenci.DersKayitlari)
+            {
+                if (item.Ders == ders)
+                {
+                    return RedirectToAction("Hata", "Ogrenci");
+                }
+            }
+
+            _dbContext.DersKayitlari.Add(yeniDers);
+            _dbContext.SaveChanges();
+
+            return RedirectToAction("AlinanDersler", "Ogrenci");
+        }
 
         public ActionResult AlinanDersler()
         {
@@ -116,6 +131,12 @@ namespace OgrenciBilgiSistemi.Controllers
             Ogrenci ogrenci = _dbContext.Ogrenciler.Where(x => x.KimlikId == kullanici.KimlikId).FirstOrDefault();
             List<DersKayit> dersKayitlari = _dbContext.DersKayitlari.Where(x => x.OgrenciId == ogrenci.Id).Include(x => x.Ders).ToList();
             return View(dersKayitlari);
+        }
+
+
+        public ActionResult Hata()
+        {
+            return View();
         }
 
 

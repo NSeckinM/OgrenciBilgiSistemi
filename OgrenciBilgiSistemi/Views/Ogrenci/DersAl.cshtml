@@ -1,0 +1,70 @@
+﻿@model List<MufredatDers>
+
+<div class="row">
+
+    <div class="col-md-8 col-lg-9">
+        <div>
+            <h3>Alınabilecek Dersler</h3>
+        </div>
+        <br />
+        <hr />
+
+
+        <div>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Ders Kodu</th>
+                        <th>Ders Adı</th>
+                        <th>Durum</th>
+                        <th>Kredi</th>
+
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                <span>@item.Ders.DersKodu</span>
+                            </td>
+                            <td>
+                                <span>@item.Ders.DersAdi</span>
+                            </td>
+                            <td>
+                                <span>@item.Ders.Durum</span>
+                            </td>
+                            <td>
+                                <span>@item.Ders.Kredi</span>
+                            </td>
+                            @if (item.Ders.Durum)
+                            {
+                                <td>
+                                    <a class="btn btn-outline-success" asp-controller="Ogrenci" asp-action="DersEkle" asp-route-id="@item.DersId">DERS EKLE</a>
+                                </td>
+                            }
+                            else
+                            {
+                                <td>
+                                    <button class="btn btn-outline-danger" type="button" disabled>İnaktif</button>
+                                </td>
+                            }
+
+
+
+                        </tr>
+
+                    }
+
+                </tbody>
+
+            </table>
+        </div>
+        
+    </div>
+
+</div>
+<br />
+<br />
+<a asp-controller="Ogrenci" asp-action="Index"> Geri Dön</a>
