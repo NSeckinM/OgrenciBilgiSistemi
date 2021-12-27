@@ -1,0 +1,93 @@
+﻿@model Kullanici
+
+<div class="row">
+
+    <div class="col-md-8 col-lg-9">
+        <div>
+            <h3>Öğrenci Kimlik Bilgileri</h3>
+        </div>
+
+        <div>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Tc Kimlik Numarası</th>
+                        <th>Adı Soyadı</th>
+                        <th>Doğum Yeri</th>
+                        <th>Doğum Tarihi</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr>
+
+                        <td>
+                            <span>@Model.Kimlik.TcNo</span>
+                        </td>
+                        <td>
+                            <span>@Model.Kimlik.Ad @Model.Kimlik.Soyad</span>
+                        </td>
+                        <td>
+                            <span>@Model.Kimlik.DogumYeri</span>
+                        </td>
+                        <td>
+                            <span>@Model.Kimlik.DogumTarihi</span>
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+        </div>
+
+    </div>
+
+    <div class="col-md-8 col-lg-9">
+        <div>
+            <h3>Öğrenci İletişim Bilgileri</h3>
+        </div>
+
+        <div>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>İl/İlçe</th>
+                        <th>Adress</th>
+                        <th>Email</th>
+                        <th>Gsm</th>
+                        <th>İletişim Bilgileri Düzenle</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    <tr>
+
+                        <td>
+                            <span>@Model.Kimlik.Iletisim.Il / @Model.Kimlik.Iletisim.Ilce</span>
+                        </td>
+                        <td>
+                            <span>@Model.Kimlik.Iletisim.Adres</span>
+                        </td>
+                        <td>
+                            <span>@Model.Kimlik.Iletisim.Email</span>
+                        </td>
+                        <td>
+                            <span>@Model.Kimlik.Iletisim.Gsm</span>
+                        </td>
+                        <td>
+                            <a asp-controller="Ogrenci" asp-action="EditIletisimBilgileri" asp-route-id="@Model.KimlikId" class="btn btn-outline-success">Düzenle</a>
+                        </td>
+                    </tr>
+                </tbody>
+
+            </table>
+        </div>
+
+    </div>
+
+</div>
+<br />
+<br />
+<a asp-controller="Ogrenci" asp-action="Index"> Geri Dön</a>

@@ -1,3 +1,52 @@
-﻿<Div>
-    <h1>ogr index</h1>
-</Div>
+﻿@model Kullanici
+
+<div class="row">
+    <div class="col-md-4 col-lg-3">
+        <h3>BİLGİ SİSTEMİ</h3>
+        <div>
+            <a class="list-group-item list-group-item-action" asp-controller="Ogrenci" asp-action="Index">Duyurular</a>
+            <a class="list-group-item list-group-item-action" asp-controller="Ogrenci" asp-action="AlinanDersler">Alınan Dersler</a>
+            <a class="list-group-item list-group-item-action" asp-controller="Ogrenci" asp-action="OgrBilgisi">Ögrenci Bilgileri</a>
+            <a class="list-group-item list-group-item-action" asp-controller="Ogrenci" asp-action="DersEkle">DERS EKLE</a>
+
+        </div>
+    </div>
+
+    <div class="col-md-8 col-lg-9">
+        <div>
+            <h3>Duyurular</h3>
+        </div>
+
+        <div>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Öğrenci Duyuruları</th>
+
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr>
+
+                        <td>
+                            <span> Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                            sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+                            Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
+                            Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
+                            Excepteur sint occaecat cupidatat non proident, 
+                            sunt in culpa qui officia deserunt mollit anim id est laborum. ... </span>
+                        </td>
+
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+        </div>
+
+    </div>
+
+</div>
+

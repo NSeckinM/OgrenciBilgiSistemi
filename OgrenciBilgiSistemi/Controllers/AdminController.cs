@@ -105,7 +105,7 @@ namespace OgrenciBilgiSistemi.Controllers
 
             Kullanici kullanici = new Kullanici()
             {
-                KullaniciAdi = model.Ad.ToLower() + "." + model.Soyad.ToLower(),
+                KullaniciAdi = model.Ad.ToLowerInvariant() + "." + model.Soyad.ToLowerInvariant(),
                 Kimlik = kimlik,
                 Tur = true,
                 UserName = model.Email,
@@ -113,7 +113,7 @@ namespace OgrenciBilgiSistemi.Controllers
                 EmailConfirmed = true
             };
 
-            string sifre = model.Ad.ToLower() + "Atlm.22";
+            string sifre = model.Ad.ToLowerInvariant() + "Atlm.22";
 
             var result = await _userManager.CreateAsync(kullanici, sifre);
             if (result.Succeeded)
@@ -175,10 +175,10 @@ namespace OgrenciBilgiSistemi.Controllers
                 ogr.Kimlik.Iletisim.Ilce = vm.Ilce;
                 ogr.Kimlik.Iletisim.Email = vm.Email;
                 ogr.Kimlik.Iletisim.Gsm = vm.Gsm;
-                ogr.Kimlik.Kullanici.KullaniciAdi = vm.Ad.ToLower() + "." + vm.Soyad.ToLower();
+                ogr.Kimlik.Kullanici.KullaniciAdi = vm.Ad.ToLowerInvariant() + "." + vm.Soyad.ToLowerInvariant();
                 ogr.Kimlik.Kullanici.UserName = vm.Email;
                 ogr.Kimlik.Kullanici.Email = vm.Email;
-                ogr.Kimlik.Kullanici.NormalizedUserName = ogr.Kimlik.Kullanici.NormalizedEmail = vm.Email.ToUpper().Trim();
+                ogr.Kimlik.Kullanici.NormalizedUserName = ogr.Kimlik.Kullanici.NormalizedEmail = vm.Email.ToUpperInvariant().Trim();
 
 
                 _dbContext.SaveChanges();
@@ -188,10 +188,7 @@ namespace OgrenciBilgiSistemi.Controllers
 
             return View();
         }
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
+
 
         public ActionResult IndexMufredat()
         {
@@ -276,6 +273,7 @@ namespace OgrenciBilgiSistemi.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult AtaGuncelleMuf(AtaGuncelleMufViewModel vm)
         {
             if (vm.Id != 0)
@@ -350,7 +348,6 @@ namespace OgrenciBilgiSistemi.Controllers
             return View(vm);
         }
 
-        // POST: AdminController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult EditDers(DuzenleDersViewModel vm)

@@ -1,0 +1,65 @@
+﻿@model List<DersKayit>
+
+<div class="row">
+
+    <div class="col-md-8 col-lg-9">
+        <div>
+            <h3>Üzerinize Tanımlanan Dersler</h3>
+        </div>
+        <hr />
+        @if (Model.Count == 0)
+        {
+            <br />
+
+            <h3 class="alert-danger m-5"> Henüz Üzerinize Kayıtlı Herhangi Bir Ders yoktur ! </h3>
+
+            <br />
+        }
+            else { 
+            <div>
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Ders Kodu</th>
+                            <th>Ders Adı</th>
+                            <th>Durum</th>
+                            <th>Kredi</th>
+                            <th>Alınma Zamanı</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    <span>@item.Ders.DersKodu</span>
+                                </td>
+                                <td>
+                                    <span>@item.Ders.DersAdi</span>
+                                </td>
+                                <td>
+                                    <span>@item.Ders.Durum</span>
+                                </td>
+                                <td>
+                                    <span>@item.Ders.Kredi</span>
+                                </td>
+                                <td>
+                                    <span>@item.CreatedDate</span>
+                                </td>
+
+                            </tr>
+
+                        }
+
+                    </tbody>
+
+                </table>
+            </div>
+        }
+    </div>
+
+</div>
+<br />
+<br />
+<a asp-controller="Ogrenci" asp-action="Index"> Geri Dön</a>
