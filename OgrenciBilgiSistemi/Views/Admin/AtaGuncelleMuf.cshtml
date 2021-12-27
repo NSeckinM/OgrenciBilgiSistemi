@@ -1,0 +1,22 @@
+﻿@model AtaGuncelleMufViewModel
+
+
+<form asp-controller="Admin" asp-action="AtaGuncelleMuf" method="post">
+
+
+    <div class="form-group">
+        <label asp-for="muf">Müfredatlar</label>
+        <select asp-for="muf" class="custom-select">
+            @foreach (Mufredat item in Model.mufredatlar)
+            {
+                <option value="@item.MufredatAdi">@item.MufredatAdi</option>
+            }
+        </select>
+        <span asp-validation-for="muf" class="text-danger"></span>
+    </div>
+
+    <button class="btn btn-outline-primary">Kaydet</button>
+
+</form>
+
+<div class="mt-3"> <a asp-controller="Admin" asp-action="Index">Geri dön</a> </div>

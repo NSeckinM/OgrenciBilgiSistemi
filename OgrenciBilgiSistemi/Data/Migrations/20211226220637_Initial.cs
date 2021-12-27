@@ -311,6 +311,99 @@ namespace OgrenciBilgiSistemi.Data.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
+            migrationBuilder.InsertData(
+                table: "Dersler",
+                columns: new[] { "Id", "DersAdi", "DersKodu", "Durum", "Kredi" },
+                values: new object[,]
+                {
+                    { 1, "Türk Demokrasi Tarihi", "HUM101", true, 5 },
+                    { 2, "Calculus 2", "MATH102", false, 6 },
+                    { 3, "Metaruljiye Giriş", "MATE103", false, 6 },
+                    { 4, "Grafik dizayn", "GRA105", true, 5 },
+                    { 5, "Bilgisayar Teknolojileri", "CMPE201", true, 4 },
+                    { 6, "İngilizce 2", "ENG102", true, 4 },
+                    { 7, "İleri Calculus", "MATH201", true, 6 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Iletisimler",
+                columns: new[] { "Id", "Adres", "Email", "Gsm", "Il", "Ilce" },
+                values: new object[,]
+                {
+                    { 1, "CUMHURİYET MAH. BİRİNCİ SOK. İKİNCİ APT. NO:11/6", "abc@hotmail.com", "5332342342", "ANKARA", "YENİMAHALLE" },
+                    { 2, "KUŞADASI SOK NO:123 KARAAĞAÇ", "def@gmail.com", "5437657567", "ANKARA", "ÇANKAYA" },
+                    { 3, "TURAN GÜNEŞ BULVARI TAMTAM SİTESİ 13. CAD. NO:51", "ghi@abc.com", "5305464646", "ANKARA", "KEÇİÖREN" },
+                    { 4, "DEMİRCİKARA MAH. B.ONAT CAD. HEDE SİT. B BLOK NO:1", "mno@xyz.com", "5555424245", "ANKARA", "PURSAKLAR" },
+                    { 5, "AHMET HAMDİ SOK. NO:19/15", "prs@hotmail.com", "5302908432", "ANKARA", "SİNCAN" },
+                    { 6, "SİTELER MAHALLESİ 6223 SOKAK DURU APT. NO:11 KAT:3", "klm@outlook.com", "5408932042", "ANKARA", "POLATLI" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Mufredatlar",
+                columns: new[] { "Id", "MufredatAdi" },
+                values: new object[,]
+                {
+                    { 1, "BilgMuh_Mufredat" },
+                    { 2, "GrafikMuh_Mufredat" },
+                    { 3, "IngDilEdebiyat_Muf" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Kimlikler",
+                columns: new[] { "Id", "Ad", "DogumTarihi", "DogumYeri", "IletisimId", "Soyad", "TcNo" },
+                values: new object[,]
+                {
+                    { 2, "Mehmet", "12.03.2000", "Adana", 1, "Yılmaz", "67967856634" },
+                    { 6, "Fatma", "01.01.2001", "Kütahya", 2, "Korkmaz", "98423479320" },
+                    { 4, "Mustafa", "21.12.2000", "Sivas", 3, "Işık", "97850348520" },
+                    { 1, "Hasan", "11.10.1983", "Kayseri", 4, "Ersoy", "45456747611" },
+                    { 5, "Ayşe", "04.03.2001", "Uşak", 5, "Erdoğan", "32756874239" },
+                    { 3, "Ahmet", "14.06.2001", "Ankara", 6, "Ünal", "72347322958" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "MufredatDersler",
+                columns: new[] { "Id", "DersId", "MufredatId" },
+                values: new object[,]
+                {
+                    { 12, 4, 3 },
+                    { 11, 1, 3 },
+                    { 10, 7, 2 },
+                    { 9, 6, 2 },
+                    { 8, 4, 2 },
+                    { 7, 3, 2 },
+                    { 4, 7, 1 },
+                    { 5, 1, 2 },
+                    { 13, 5, 3 },
+                    { 3, 6, 1 },
+                    { 2, 5, 1 },
+                    { 1, 2, 1 },
+                    { 6, 2, 2 },
+                    { 14, 6, 3 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Ogrenciler",
+                columns: new[] { "Id", "KimlikId", "MufredatId", "OgrenciNo" },
+                values: new object[,]
+                {
+                    { 4, 2, 2, "53456346" },
+                    { 3, 6, 2, "34565479" },
+                    { 5, 4, 3, "34674575" },
+                    { 2, 5, 1, "23462368" },
+                    { 1, 3, 1, "27482379" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "DersKayitlari",
+                columns: new[] { "Id", "CreatedDate", "DersId", "OgrenciId" },
+                values: new object[] { 2, new DateTime(2021, 11, 4, 0, 0, 0, 0, DateTimeKind.Unspecified), 6, 4 });
+
+            migrationBuilder.InsertData(
+                table: "DersKayitlari",
+                columns: new[] { "Id", "CreatedDate", "DersId", "OgrenciId" },
+                values: new object[] { 1, new DateTime(2021, 11, 4, 0, 0, 0, 0, DateTimeKind.Unspecified), 3, 3 });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",

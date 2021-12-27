@@ -25,7 +25,7 @@ namespace OgrenciBilgiSistemi.Controllers
             _userManager = userManager;
         }
 
-        // GET: AdminController
+        // GET: AdminController 
         public ActionResult Index()
         {
 
@@ -37,78 +37,97 @@ namespace OgrenciBilgiSistemi.Controllers
             }
             return View(ogrs);
         }
+        public IActionResult OgrDersGoruntule(int id)
+        {
+            Ogrenci ogr = _dbContext.Ogrenciler.Include(k => k.Mufredat).Include(k => k.Kimlik).Include(i => i.DersKayitlari).Where(x => x.Id == id).FirstOrDefault();
+
+            List<DersKayit> gelendersler = _dbContext.DersKayitlari.Where(x => x.OgrenciId == id).Include(x => x.Ders).ToList();
+            OgrDersGoruntuleViewModel vm = new()
+            {
+                OgrenciNo = ogr.OgrenciNo,
+                Ad = ogr.Kimlik.Ad,
+                Soyad = ogr.Kimlik.Soyad,
+                MufredatAdi = ogr.Mufredat.MufredatAdi,
+                Dersler = gelendersler
+
+            };
+            if (vm == null)
+            {
+                return View();
+            }
+            return View(vm);
+        }
 
 
         public IActionResult CreateOgr()
         {
-            CreateOgrViewModel covm = new();
-            covm.mufredats = _dbContext.Mufredatlar.ToList();
+            CreateOgrViewModel vm = new();
+            vm.mufredats = _dbContext.Mufredatlar.ToList();
 
-            return View(covm);
+            return View(vm);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateOgr(CreateOgrViewModel model)
         {
-            if (ModelState.IsValid)
+            Iletisim ıletisim = new()
             {
-                Iletisim ıletisim = new()
-                {
-                    Adres = model.Adres,
-                    Il = model.Il,
-                    Ilce = model.Ilce,
-                    Email = model.Email,
-                    Gsm = model.Gsm
-                };
-                _dbContext.Iletisimler.Add(ıletisim);
+                Adres = model.Adres,
+                Il = model.Il,
+                Ilce = model.Ilce,
+                Email = model.Email,
+                Gsm = model.Gsm
+            };
+            _dbContext.Iletisimler.Add(ıletisim);
 
-                Kimlik kimlik = new()
-                {
-                    TcNo = model.TcNo,
-                    Ad = model.Ad,
-                    Soyad = model.Soyad,
-                    DogumYeri = model.DogumYeri,
-                    DogumTarihi = model.DogumTarihi,
-                    Iletisim = ıletisim
-                };
-                _dbContext.Kimlikler.Add(kimlik);
+            Kimlik kimlik = new()
+            {
+                TcNo = model.TcNo,
+                Ad = model.Ad,
+                Soyad = model.Soyad,
+                DogumYeri = model.DogumYeri,
+                DogumTarihi = model.DogumTarihi,
+                Iletisim = ıletisim
+            };
+            _dbContext.Kimlikler.Add(kimlik);
 
-                Mufredat mufredat = _dbContext.Mufredatlar.FirstOrDefault(x => x.MufredatAdi == model.MufredatAdi);
+            Mufredat mufredat = _dbContext.Mufredatlar.FirstOrDefault(x => x.MufredatAdi == model.MufredatAdi);
 
-                Ogrenci ogrenci = new()
-                {
-                    OgrenciNo = model.OgrenciNo,
-                    Kimlik = kimlik,
-                    Mufredat = mufredat
-                };
-                _dbContext.Ogrenciler.Add(ogrenci);
-                _dbContext.SaveChanges();
+            Ogrenci ogrenci = new()
+            {
+                OgrenciNo = model.OgrenciNo,
+                Kimlik = kimlik,
+                Mufredat = mufredat
+            };
+            _dbContext.Ogrenciler.Add(ogrenci);
+            _dbContext.SaveChanges();
 
-                Kullanici kullanici = new Kullanici()
-                {
-                    KullaniciAdi = model.Ad.ToLower() + "." + model.Soyad.ToLower(),
-                    Kimlik = kimlik,
-                    Tur = true,
-                    UserName = model.Email,
-                    Email = model.Email,
-                    EmailConfirmed = true
-                };
+            Kullanici kullanici = new Kullanici()
+            {
+                KullaniciAdi = model.Ad.ToLower() + "." + model.Soyad.ToLower(),
+                Kimlik = kimlik,
+                Tur = true,
+                UserName = model.Email,
+                Email = model.Email,
+                EmailConfirmed = true
+            };
 
-                string sifre = model.Ad.ToLower() + "Atlm.22" ;
+            string sifre = model.Ad.ToLower() + "Atlm.22";
 
-                var result = await _userManager.CreateAsync(kullanici, sifre);
-                if (result.Succeeded)
-                {
-                    await _userManager.AddToRoleAsync(kullanici, "ogr");
-                }
+            var result = await _userManager.CreateAsync(kullanici, sifre);
+            if (result.Succeeded)
+            {
+                await _userManager.AddToRoleAsync(kullanici, "ogr");
 
                 _dbContext.SaveChanges();
 
                 return RedirectToAction("Index", "Admin");
-
             }
-            return View();
+            else
+            {
+                return BadRequest();
+            }
 
         }
 
@@ -134,8 +153,6 @@ namespace OgrenciBilgiSistemi.Controllers
             vm.Ilce = ogr.Kimlik.Iletisim.Ilce;
             vm.Email = ogr.Kimlik.Iletisim.Email;
             vm.Gsm = ogr.Kimlik.Iletisim.Gsm;
-
-
             return View(vm);
         }
 
@@ -162,7 +179,7 @@ namespace OgrenciBilgiSistemi.Controllers
                 ogr.Kimlik.Kullanici.UserName = vm.Email;
                 ogr.Kimlik.Kullanici.Email = vm.Email;
                 ogr.Kimlik.Kullanici.NormalizedUserName = ogr.Kimlik.Kullanici.NormalizedEmail = vm.Email.ToUpper().Trim();
-              
+
 
                 _dbContext.SaveChanges();
                 return RedirectToAction("Index", "Admin");
@@ -243,6 +260,37 @@ namespace OgrenciBilgiSistemi.Controllers
             }
             return View();
         }
+
+
+
+        public ActionResult AtaGuncelleMuf(int id)
+        {
+            AtaGuncelleMufViewModel vm = new();
+            vm.Id = id;
+            vm.mufredatlar = _dbContext.Mufredatlar.ToList();
+            if (vm.mufredatlar.Count == 0 || vm.Id == 0)
+            {
+                return NotFound();
+            }
+            return View(vm);
+        }
+
+        [HttpPost]
+        public ActionResult AtaGuncelleMuf(AtaGuncelleMufViewModel vm)
+        {
+            if (vm.Id != 0)
+            {
+                Ogrenci ogrenci = _dbContext.Ogrenciler.Where(x => x.Id == vm.Id).FirstOrDefault();
+                Mufredat mufredat = _dbContext.Mufredatlar.Where(x => x.MufredatAdi == vm.muf).FirstOrDefault();
+                ogrenci.Mufredat = mufredat;
+
+                _dbContext.SaveChanges();
+               return RedirectToAction("Index", "Admin");
+            }
+            return View();
+           
+        }
+
 
 
         public ActionResult IndexDers()

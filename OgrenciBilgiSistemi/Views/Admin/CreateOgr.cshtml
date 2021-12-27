@@ -81,21 +81,13 @@
     <div class="form-group">
         <label asp-for="MufredatAdi">Müfredat</label>
         <select asp-for="MufredatAdi" class="custom-select">
-
-            <option value="BilgMuh_Mufredat">BilgMuh_Mufredat1</option>
-            <option value="BilgMuh_Mufredat">BilgMuh_Mufredat2</option>
-
-        </select>
-    </div>
-    @*<div class="form-group">
-        <label asp-for="MufredatAdi">Müfredat</label>
-        <select asp-for="MufredatAdi" class="custom-select">
             @foreach (Mufredat item in Model.mufredats)
             {
                 <option value="@item.MufredatAdi">@item.MufredatAdi</option>
             }
         </select>
-    </div>*@
+        <span asp-validation-for="MufredatAdi" class="text-danger"></span>
+    </div>
 
     <button class="btn btn-outline-primary">Oluştur</button>
 

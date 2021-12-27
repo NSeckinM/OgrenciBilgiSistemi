@@ -4,10 +4,11 @@
 
     <div class="col-lg-12">
         <h3>Seçenekler</h3>
-        <div>
+        <div class="m-3">
             <a class="list-group-item list-group-item-action active" asp-controller="Admin" asp-action="Index">Ögrenci İşlemleri</a>
             <a class="list-group-item list-group-item-action" asp-controller="Admin" asp-action="IndexMufredat">Müfredat İşlemleri</a>
             <a class="list-group-item list-group-item-action" asp-controller="Admin" asp-action="IndexDers">Ders İşlemleri</a>
+            <a class="list-group-item list-group-item-action" asp-controller="Admin" asp-action="CreateOgr">Öğrenci Oluşturma</a>
         </div>
     </div>
 
@@ -27,7 +28,8 @@
                         <th>Adress</th>
                         <th>Email</th>
                         <th>Gsm</th>
-                        <th>Müfredat/Dersler</th>
+                        <th>Dersler</th>
+                        <th>Mufredat</th>
                         <th>Düzenle</th>
                     </tr>
                 </thead>
@@ -62,7 +64,10 @@
                             <span>@item.Kimlik.Iletisim.Gsm</span>
                         </td>
                         <td>
-                            <a asp-controller="Admin" asp-action="Index" asp-route-id="@item.Id" class="btn btn-outline-success">Görüntüle</a>
+                            <a asp-controller="Admin" asp-action="OgrDersGoruntule" asp-route-id="@item.Id" class="btn btn-outline-success">Görüntüle</a>
+                        </td>
+                        <td>
+                            <a asp-controller="Admin" asp-action="AtaGuncelleMuf" asp-route-id="@item.Id" class="btn btn-outline-success">Ata/Güncelle</a>
                         </td>
                         <td>
                             <a asp-controller="Admin" asp-action="EditOgr" asp-route-id="@item.Id" class="btn btn-outline-success">Düzenle</a>
