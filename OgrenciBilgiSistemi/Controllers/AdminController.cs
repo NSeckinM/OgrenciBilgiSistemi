@@ -71,6 +71,11 @@ namespace OgrenciBilgiSistemi.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateOgr(CreateOgrViewModel model)
         {
+            if (!ModelState.IsValid)
+            {
+                //return BadRequest("Invalid Data");
+                return RedirectToAction("CreateOgr", "Admin");
+            }
             Iletisim ıletisim = new()
             {
                 Adres = model.Adres,
@@ -128,6 +133,7 @@ namespace OgrenciBilgiSistemi.Controllers
             {
                 return BadRequest();
             }
+
 
         }
 
@@ -225,8 +231,63 @@ namespace OgrenciBilgiSistemi.Controllers
             return View();
 
         }
+        public IActionResult DersofMuf(int id)
+        {
+            List<MufredatDers> mufredatinDersleri = _dbContext.MufredatDersler.Include(x =>x.Ders).Where(x => x.MufredatId == id).ToList();
+            Mufredat mufredat = _dbContext.Mufredatlar.FirstOrDefault(x => x.Id == id);
+            DersofMufViewModel vm = new()
+            {
+                Id = id,
+                MufredatinDerslerivm = mufredatinDersleri,
+                Mufredatvm = mufredat
+            };
+            
+            return View(vm);
+        }
+
+        public IActionResult AddDersToMuf(int id)
+        {
+            List<Ders> dersler = _dbContext.Dersler.Include(x => x.MufredatDersler).ToList();
+
+            AddDersToMufViewModel vm = new()
+            {
+                Id = id,
+                Derslervm = dersler
+            };
 
 
+            return View(vm);
+
+        }
+
+        public IActionResult AddDersToMuf2(int id, int mufid)
+        {
+            Ders ders = _dbContext.Dersler.FirstOrDefault(x => x.Id == id);
+
+            Mufredat mufredat = _dbContext.Mufredatlar.Include(x => x.MufredatDersler).FirstOrDefault(x => x.Id == mufid);
+
+            MufredatDers yeniMufredatDers = new();
+
+            yeniMufredatDers.Ders = ders;
+            yeniMufredatDers.Mufredat = mufredat;
+
+            foreach (var item in mufredat.MufredatDersler)
+            {
+                if (item.Ders == ders)
+                {
+                    return RedirectToAction("Hata", "Admin");
+                }
+            }
+            _dbContext.MufredatDersler.Add(yeniMufredatDers);
+            _dbContext.SaveChanges();
+
+            return RedirectToAction("IndexMufredat", "Admin");
+        }
+
+        public IActionResult Hata()
+        {
+            return View();
+        }
 
         public ActionResult EditMuf(int id)
         {
@@ -283,10 +344,10 @@ namespace OgrenciBilgiSistemi.Controllers
                 ogrenci.Mufredat = mufredat;
 
                 _dbContext.SaveChanges();
-               return RedirectToAction("Index", "Admin");
+                return RedirectToAction("Index", "Admin");
             }
             return View();
-           
+
         }
 
 
